@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:consistency_builder/models/daily_task.dart';
 import 'package:consistency_builder/services/temporary_storage.dart';
+import 'package:consistency_builder/widgets/glow_action_button.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key, this.task});
@@ -188,142 +189,160 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       appBar: AppBar(
         title: Text(widget.task == null ? 'Add Daily Task' : 'Edit Daily Task'),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Task Name',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) => value == null || value.trim().isEmpty ? 'Please enter a task name' : null,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _descriptionController,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Description (Optional)',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text('Task Type', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
-                const SizedBox(height: 8),
-                SegmentedButton<TaskType>(
-                  segments: TaskType.values.map((type) {
-                    final label = switch (type) {
-                      TaskType.daily => 'Daily',
-                      TaskType.once => 'Once',
-                      TaskType.followUp => 'Follow Up',
-                    };
-                    return ButtonSegment<TaskType>(
-                      value: type,
-                      label: Text(label),
-                    );
-                  }).toList(),
-                  selected: {_selectedTaskType},
-                  onSelectionChanged: (selection) {
-                    setState(() {
-                      _selectedTaskType = selection.first;
-                    });
-                  },
-                ),
-                const SizedBox(height: 16),
-                InkWell(
-                  onTap: _pickDate,
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: theme.colorScheme.outline),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF071B2D),
+              Color(0xFF0C213A),
+              Color(0xFF122B4E),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  TextFormField(
+                    controller: _nameController,
+                    style: const TextStyle(color: Color(0xFFEAF4FF)),
+                    decoration: const InputDecoration(
+                      labelText: 'Task Name',
+                      border: OutlineInputBorder(),
                     ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.calendar_today_outlined),
-                        const SizedBox(width: 12),
-                        Text('Date: ${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}'),
-                      ],
+                    validator: (value) => value == null || value.trim().isEmpty ? 'Please enter a task name' : null,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _descriptionController,
+                    maxLines: 3,
+                    style: const TextStyle(color: Color(0xFFEAF4FF)),
+                    decoration: const InputDecoration(
+                      labelText: 'Description (Optional)',
+                      border: OutlineInputBorder(),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                InkWell(
-                  onTap: _pickTime,
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: theme.colorScheme.outline),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.access_time_outlined),
-                        const SizedBox(width: 12),
-                        Text('Time: ${_selectedTime.format(context)}'),
-                      ],
+                  const SizedBox(height: 16),
+                  Text('Task Type', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, color: const Color(0xFFEAF4FF))),
+                  const SizedBox(height: 8),
+                  SegmentedButton<TaskType>(
+                    segments: TaskType.values.map((type) {
+                      final label = switch (type) {
+                        TaskType.daily => 'Daily',
+                        TaskType.once => 'Once',
+                        TaskType.followUp => 'Follow Up',
+                      };
+                      return ButtonSegment<TaskType>(
+                        value: type,
+                        label: Text(label),
+                      );
+                    }).toList(),
+                    selected: {_selectedTaskType},
+                    onSelectionChanged: (selection) {
+                      setState(() {
+                        _selectedTaskType = selection.first;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  InkWell(
+                    onTap: _pickDate,
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: const Color(0xFF102A43).withValues(alpha: 0.7),
+                        border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.5)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.calendar_today_outlined, color: Color(0xFFB9D9FF)),
+                          const SizedBox(width: 12),
+                          Text('Date: ${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}', style: const TextStyle(color: Color(0xFFEAF4FF))),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Reminder Settings', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
-                        const SizedBox(height: 12),
-                        SwitchListTile.adaptive(
-                          contentPadding: EdgeInsets.zero,
-                          title: const Text('Reminder'),
-                          value: _reminderEnabled,
-                          onChanged: (value) {
-                            setState(() {
-                              _reminderEnabled = value;
-                              if (!value) {
-                                _reminderDuration = null;
-                              }
-                            });
-                          },
-                        ),
-                        if (_reminderEnabled)
-                          ListTile(
+                  const SizedBox(height: 16),
+                  InkWell(
+                    onTap: _pickTime,
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: const Color(0xFF102A43).withValues(alpha: 0.7),
+                        border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.5)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.access_time_outlined, color: Color(0xFFB9D9FF)),
+                          const SizedBox(width: 12),
+                          Text('Time: ${_selectedTime.format(context)}', style: const TextStyle(color: Color(0xFFEAF4FF))),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Card(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Reminder Settings', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: const Color(0xFFEAF4FF))),
+                          const SizedBox(height: 12),
+                          SwitchListTile.adaptive(
                             contentPadding: EdgeInsets.zero,
-                            title: const Text('Reminder Before Task'),
-                            subtitle: Text(_reminderDuration == null ? 'Select a reminder duration' : _formatDuration(_reminderDuration!)),
-                            trailing: const Icon(Icons.access_time_outlined),
-                            onTap: _pickReminderDuration,
+                            title: const Text('Reminder'),
+                            value: _reminderEnabled,
+                            onChanged: (value) {
+                              setState(() {
+                                _reminderEnabled = value;
+                                if (!value) {
+                                  _reminderDuration = null;
+                                }
+                              });
+                            },
                           ),
-                      ],
+                          if (_reminderEnabled)
+                            ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: const Text('Reminder Before Task'),
+                              subtitle: Text(_reminderDuration == null ? 'Select a reminder duration' : _formatDuration(_reminderDuration!)),
+                              trailing: const Icon(Icons.access_time_outlined),
+                              onTap: _pickReminderDuration,
+                            ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Cancel'),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GlowActionButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          label: const Text('Cancel'),
+                          isOutlined: true,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: FilledButton(
-                        onPressed: _saveTask,
-                        child: const Text('Save'),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: GlowActionButton(
+                          onPressed: _saveTask,
+                          label: const Text('Save'),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

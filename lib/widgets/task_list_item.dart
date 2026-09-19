@@ -23,29 +23,39 @@ class TaskListItem extends StatelessWidget {
     return Card(
       color: isCompleted
           ? theme.colorScheme.primaryContainer.withValues(alpha: 0.42)
-          : Colors.white,
+          : const Color(0xFF102A43).withValues(alpha: 0.9),
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         leading: showCheckbox
-            ? Checkbox(value: isCompleted, onChanged: (_) => onToggle())
+            ? Checkbox(
+                value: isCompleted,
+                onChanged: (_) => onToggle(),
+                activeColor: const Color(0xFF8AB8FF),
+              )
             : null,
         title: Text(
           task.name,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w700,
             color: isCompleted
-                ? theme.colorScheme.onSurfaceVariant
-                : const Color(0xFF102A2A),
+                ? const Color(0xFFB9D9FF)
+                : const Color(0xFFEAF4FF),
           ),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (task.description.isNotEmpty) Text(task.description),
+            if (task.description.isNotEmpty)
+              Text(
+                task.description,
+                style: const TextStyle(color: Color(0xFFD6E6FF)),
+              ),
             const SizedBox(height: 4),
             Text(
               '${task.time.format(context)} • ${_taskTypeLabel(task.taskType)}',
-              style: theme.textTheme.bodySmall,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: const Color(0xFFB9D9FF),
+              ),
             ),
             if (isCompleted)
               Padding(
@@ -53,7 +63,7 @@ class TaskListItem extends StatelessWidget {
                 child: Text(
                   'Completed',
                   style: TextStyle(
-                    color: theme.colorScheme.primary,
+                    color: theme.colorScheme.secondary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

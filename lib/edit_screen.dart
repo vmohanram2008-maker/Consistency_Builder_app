@@ -4,6 +4,7 @@ import 'package:consistency_builder/models/goal.dart';
 import 'package:consistency_builder/screens/add_goal_screen.dart';
 import 'package:consistency_builder/screens/add_task_screen.dart';
 import 'package:consistency_builder/services/temporary_storage.dart';
+import 'package:consistency_builder/widgets/glow_action_button.dart';
 
 class EditScreen extends StatefulWidget {
   const EditScreen({super.key});
@@ -73,26 +74,19 @@ class _EditScreenState extends State<EditScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: FilledButton.icon(
+                      child: GlowActionButton(
                         onPressed: isDailyTasks ? _openAddTaskFlow : _openAddGoalFlow,
-                        icon: const Icon(Icons.add_circle_outline),
+                        icon: const Icon(Icons.add_circle_outline, color: Color(0xFF061626)),
                         label: Text(isDailyTasks ? 'Add Task' : 'Add Goal'),
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        ),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: OutlinedButton.icon(
+                      child: GlowActionButton(
                         onPressed: isDailyTasks ? _openDeleteTaskFlow : _openDeleteGoalFlow,
-                        icon: const Icon(Icons.delete_outline),
+                        icon: const Icon(Icons.delete_outline, color: Color(0xFFEAF4FF)),
                         label: Text(isDailyTasks ? 'Delete Task' : 'Delete Goal'),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        ),
+                        isOutlined: true,
                       ),
                     ),
                   ],

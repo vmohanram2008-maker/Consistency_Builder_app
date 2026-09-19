@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:consistency_builder/models/goal.dart';
 import 'package:consistency_builder/services/temporary_storage.dart';
+import 'package:consistency_builder/widgets/glow_action_button.dart';
 
 class AddGoalScreen extends StatefulWidget {
   const AddGoalScreen({super.key, this.goal});
@@ -84,67 +85,87 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
       appBar: AppBar(
         title: Text(widget.goal == null ? 'Add Goal' : 'Edit Goal'),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Goal Name',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) => value == null || value.trim().isEmpty ? 'Please enter a goal name' : null,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _descriptionController,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                InkWell(
-                  onTap: _pickDate,
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: theme.colorScheme.outline),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF071B2D),
+              Color(0xFF0C213A),
+              Color(0xFF122B4E),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  TextFormField(
+                    controller: _nameController,
+                    style: const TextStyle(color: Color(0xFFEAF4FF)),
+                    decoration: const InputDecoration(
+                      labelText: 'Goal Name',
+                      border: OutlineInputBorder(),
                     ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.calendar_today_outlined),
-                        const SizedBox(width: 12),
-                        Text('Target Date: ${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}'),
-                      ],
+                    validator: (value) => value == null || value.trim().isEmpty ? 'Please enter a goal name' : null,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _descriptionController,
+                    maxLines: 3,
+                    style: const TextStyle(color: Color(0xFFEAF4FF)),
+                    decoration: const InputDecoration(
+                      labelText: 'Description',
+                      border: OutlineInputBorder(),
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Cancel'),
+                  const SizedBox(height: 16),
+                  InkWell(
+                    onTap: _pickDate,
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: const Color(0xFF102A43).withValues(alpha: 0.7),
+                        border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.5)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.calendar_today_outlined, color: Color(0xFFB9D9FF)),
+                          const SizedBox(width: 12),
+                          Text(
+                            'Target Date: ${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                            style: const TextStyle(color: Color(0xFFEAF4FF)),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: FilledButton(
-                        onPressed: _saveGoal,
-                        child: const Text('Save'),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GlowActionButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          label: const Text('Cancel'),
+                          isOutlined: true,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: GlowActionButton(
+                          onPressed: _saveGoal,
+                          label: const Text('Save'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

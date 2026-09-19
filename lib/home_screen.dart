@@ -27,15 +27,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   'Your consistency workspace',
                   style: theme.textTheme.labelLarge?.copyWith(
-                    color: theme.colorScheme.primary,
+                    color: const Color(0xFFB9D9FF),
                     fontWeight: FontWeight.w700,
+                    letterSpacing: 0.4,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   'Build the day you want.',
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    color: const Color(0xFF102A2A),
+                    color: const Color(0xFFEAF4FF),
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -133,7 +134,25 @@ class _SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xFF163457).withValues(alpha: 0.95),
+            const Color(0xFF102A43).withValues(alpha: 0.92),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF8AB8FF).withValues(alpha: 0.18),
+            blurRadius: 20,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -143,12 +162,18 @@ class _SummaryCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: Theme.of(context).textTheme.bodySmall),
+                Text(
+                  label,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: const Color(0xFFB9D9FF),
+                  ),
+                ),
                 Text(
                   value,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFFEAF4FF),
+                  ),
                 ),
               ],
             ),

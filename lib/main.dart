@@ -25,35 +25,87 @@ class ConsistencyBuilderApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const bgDark = Color(0xFF071B2D);
+    const bgMid = Color(0xFF102C46);
+    const accent = Color(0xFF8AB8FF);
+    const accentSoft = Color(0xFFB9D9FF);
+
     return MaterialApp(
       title: 'Consistency Builder',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme:
-            ColorScheme.fromSeed(
-              seedColor: const Color(0xFF0F766E),
-              brightness: Brightness.light,
-              surface: const Color(0xFFF5F7F6),
-            ).copyWith(
-              primary: const Color(0xFF0F766E),
-              onPrimary: Colors.white,
-              primaryContainer: const Color(0xFFD7F2ED),
-              surfaceContainerHighest: const Color(0xFFE8EEEC),
-            ),
-        scaffoldBackgroundColor: const Color(0xFFF5F7F6),
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: accent,
+          brightness: Brightness.dark,
+          surface: bgMid,
+        ).copyWith(
+          primary: accent,
+          onPrimary: const Color(0xFF061626),
+          primaryContainer: const Color(0xFF113661),
+          secondary: const Color(0xFF9FC7FF),
+          onSecondary: const Color(0xFF061626),
+          surfaceContainerHighest: const Color(0xFF163457),
+          onSurface: const Color(0xFFEAF4FF),
+          onSurfaceVariant: const Color(0xFFB9D9FF),
+        ),
+        scaffoldBackgroundColor: bgDark,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFF5F7F6),
-          foregroundColor: Color(0xFF102A2A),
+          backgroundColor: Colors.transparent,
+          foregroundColor: Color(0xFFEAF4FF),
           elevation: 0,
           scrolledUnderElevation: 0,
         ),
         cardTheme: CardThemeData(
-          color: Colors.white,
+          color: const Color(0xFF122B4E).withValues(alpha: 0.82),
           elevation: 0,
           margin: EdgeInsets.zero,
+          shadowColor: accent.withValues(alpha: 0.22),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
+            side: BorderSide(color: accentSoft.withValues(alpha: 0.18), width: 1),
+          ),
+        ),
+        navigationBarTheme: NavigationBarThemeData(
+          backgroundColor: const Color(0xFF0C1F38),
+          indicatorColor: accent.withValues(alpha: 0.2),
+          surfaceTintColor: Colors.transparent,
+          iconTheme: WidgetStateProperty.resolveWith((states) {
+            final selected = states.contains(WidgetState.selected);
+            return IconThemeData(
+              color: selected ? const Color(0xFFB9D9FF) : const Color(0xFF9FBAD9),
+            );
+          }),
+          labelTextStyle: WidgetStateProperty.resolveWith((states) {
+            final selected = states.contains(WidgetState.selected);
+            return TextStyle(
+              color: selected ? const Color(0xFFEAF4FF) : const Color(0xFF9FBAD9),
+              fontWeight: FontWeight.w600,
+            );
+          }),
+        ),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            backgroundColor: accent,
+            foregroundColor: const Color(0xFF061626),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shadowColor: accent.withValues(alpha: 0.55),
+            elevation: 0,
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: const Color(0xFFEAF4FF),
+            side: BorderSide(color: accentSoft.withValues(alpha: 0.75), width: 1.2),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: const Color(0xFFB9D9FF),
           ),
         ),
       ),
@@ -107,38 +159,67 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
         title: Text(_appTitleForIndex(_selectedIndex)),
         centerTitle: false,
         automaticallyImplyLeading: false,
       ),
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: _onItemTapped,
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home_outlined), label: 'Home'),
-          NavigationDestination(
-            icon: Icon(Icons.show_chart_outlined),
-            label: 'Progress',
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF071B2D),
+              Color(0xFF0C213A),
+              Color(0xFF122B4E),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.flag_outlined),
-            label: 'Goals',
+        ),
+        child: _pages[_selectedIndex],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF8AB8FF).withValues(alpha: 0.18),
+                blurRadius: 20,
+                spreadRadius: 2,
+              ),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.insights_outlined),
-            label: 'Analytics',
+          child: NavigationBar(
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: _onItemTapped,
+            destinations: const [
+              NavigationDestination(icon: Icon(Icons.home_outlined), label: 'Home'),
+              NavigationDestination(
+                icon: Icon(Icons.show_chart_outlined),
+                label: 'Progress',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.flag_outlined),
+                label: 'Goals',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.insights_outlined),
+                label: 'Analytics',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.workspace_premium_outlined),
+                label: 'Achievement',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.edit_note_outlined),
+                label: 'Edit',
+              ),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.workspace_premium_outlined),
-            label: 'Achievement',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.edit_note_outlined),
-            label: 'Edit',
-          ),
-        ],
+        ),
       ),
     );
   }
