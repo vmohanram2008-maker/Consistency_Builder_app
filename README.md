@@ -1,17 +1,29 @@
-# consistency_builder
+# Consistency Builder
 
-A new Flutter project.
+A Flutter productivity app for building daily consistency through tasks, goals, analytics, and achievement tracking.
 
-## Getting Started
+## Current app flow
 
-This project is a starting point for a Flutter application.
+- Direct app startup with no login gate
+- Home workspace for today's tasks and summary cards
+- Progress, goals, analytics, achievement, and edit flows
+- Persistent task and goal data saved in local storage for web/native builds
 
-A few resources to get you started if this is your first Flutter project:
+## Run locally
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+```bash
+flutter pub get
+flutter run
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Build for web
+
+```bash
+flutter build web --release
+```
+
+## Notes
+
+- The app keeps data across refreshes on web using SharedPreferences.
+- Native platforms use SQLite-backed storage for persistence.
+- The task model follows a direct, single-user workspace flow rather than a login/register flow.

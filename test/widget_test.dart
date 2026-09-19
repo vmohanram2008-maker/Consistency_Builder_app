@@ -1,10 +1,3 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,12 +10,14 @@ void main() {
     SharedPreferences.setMockInitialValues({});
   });
 
-  testWidgets('app opens the main workspace', (WidgetTester tester) async {
+  testWidgets('app opens the direct-start workspace', (WidgetTester tester) async {
     await tester.pumpWidget(const ConsistencyBuilderApp());
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     expect(find.text('Consistency Builder'), findsOneWidget);
-    expect(find.text("Today's Tasks"), findsOneWidget);
+    expect(find.text('Your consistency workspace'), findsOneWidget);
+    expect(find.text('Build the day you want.'), findsOneWidget);
+    expect(find.text('Home'), findsOneWidget);
     expect(find.text('Achievement'), findsOneWidget);
   });
 }
