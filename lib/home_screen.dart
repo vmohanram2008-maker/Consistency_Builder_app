@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Today\'s tasks',
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: const Color(0xFF102A2A),
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 12),
